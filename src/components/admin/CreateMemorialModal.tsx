@@ -60,11 +60,12 @@ export default function CreateMemorialModal({ onClose }: Props) {
       if (dbErr) throw dbErr;
 
       // Also insert into memorial_admins so the creator can manage it
-      await supabase.from('memorial_admins').insert({
+      const { error: adminErr } = await supabase.from('memorial_admins').insert({
         memorial_id: data.id,
-        user_id: user!.id,
-        role: 'primary',
+        profile_id: user!.id,
+        role: 'owner',
       });
+      if (adminErr) throw adminErr;
 
       // Navigate to the new memorial's editor
       navigate(`/admin/memorials/${data.id}`);
