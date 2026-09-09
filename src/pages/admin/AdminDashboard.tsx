@@ -11,6 +11,7 @@ export default function AdminDashboard() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [memorials, setMemorials] = useState<Memorial[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -28,8 +29,10 @@ export default function AdminDashboard() {
 
       if (error) {
         console.error('Error fetching memorials:', error);
+        setFetchError('Could not load your memorials. Please refresh the page or check your connection.');
       } else {
         setMemorials(data || []);
+        setFetchError(null);
       }
       setLoading(false);
     }
@@ -47,6 +50,11 @@ export default function AdminDashboard() {
 
   return (
     <div style={{ padding: 'var(--space-8) var(--space-6)', maxWidth: 1200, margin: '0 auto' }}>
+      {fetchError && (
+        <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 'var(--radius-md)', padding: 'var(--space-4)', color: '#b91c1c', fontFamily: 'var(--font-body)', fontSize: 'var(--text-sm)', marginBottom: 'var(--space-6)' }}>
+          {fetchError}
+        </div>
+      )}
       {showCreateModal && <CreateMemorialModal onClose={() => setShowCreateModal(false)} />}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-8)', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
         <div>

@@ -20,8 +20,10 @@ export function useMemorial(slug: string): UseMemorialResult {
   useEffect(() => {
     if (!slug) return;
 
-    // Use sample data if Supabase not yet configured or slug matches demo
-    if (!isSupabaseConfigured || slug === 'kofi-mensah') {
+    // Use sample data if Supabase not yet configured, or if the slug matches the demo slug
+    // (VITE_DEMO_SLUG env var — prevents collisions with real memorials)
+    const demoSlug = import.meta.env.VITE_DEMO_SLUG ?? 'kofi-mensah';
+    if (!isSupabaseConfigured || slug === demoSlug) {
       setTimeout(() => {
         setData(SAMPLE_MEMORIAL);
         setLoading(false);
@@ -64,6 +66,17 @@ export function useMemorial(slug: string): UseMemorialResult {
           supabase.from('funeral_details').select('*').eq('memorial_id', memorial.id).maybeSingle(),
           supabase.from('candles').select('id', { count: 'exact', head: true }).eq('memorial_id', memorial.id),
         ]);
+
+        // Log warnings for any individual table errors — these are non-fatal but indicate a problem
+        if (bioRes.error) console.warn('[Memorial] Failed to load biography:', bioRes.error.message);
+        if (timelineRes.error) console.warn('[Memorial] Failed to load timeline:', timelineRes.error.message);
+        if (programmeRes.error) console.warn('[Memorial] Failed to load programme:', programmeRes.error.message);
+        if (albumsRes.error) console.warn('[Memorial] Failed to load albums:', albumsRes.error.message);
+        if (imagesRes.error) console.warn('[Memorial] Failed to load images:', imagesRes.error.message);
+        if (videosRes.error) console.warn('[Memorial] Failed to load videos:', videosRes.error.message);
+        if (tributesRes.error) console.warn('[Memorial] Failed to load tributes:', tributesRes.error.message);
+        if (detailsRes.error) console.warn('[Memorial] Failed to load funeral details:', detailsRes.error.message);
+        if (candleRes.error) console.warn('[Memorial] Failed to load candle count:', candleRes.error.message);
 
         setData({
           memorial,

@@ -31,6 +31,24 @@ async function uploadToStorage(
   return publicUrl;
 }
 
+/**
+ * Derive a safe file extension from the MIME type.
+ * Falls back to the file's own extension if the MIME type is unknown.
+ */
+function getExtension(file: File): string {
+  const mimeMap: Record<string, string> = {
+    'image/jpeg': 'jpg',
+    'image/jpg': 'jpg',
+    'image/png': 'png',
+    'image/webp': 'webp',
+    'image/gif': 'gif',
+  };
+  if (mimeMap[file.type]) return mimeMap[file.type];
+  // Fallback: try to extract from filename
+  const parts = file.name.split('.');
+  return parts.length > 1 ? parts.pop()! : 'jpg';
+}
+
 
 // ── Image Upload Button ───────────────────────────────────────
 
@@ -178,7 +196,7 @@ export default function PhotoGalleryEditor({
     setPortraitProgress(30);
     setError('');
     try {
-      const ext = file.name.split('.').pop();
+      const ext = getExtension(file);
       const url = await uploadToStorage(`${memorialId}/portrait.${ext}`, file);
       setPortraitProgress(80);
       await supabase.from('memorials').update({ profile_image_url: url }).eq('id', memorialId);
@@ -200,7 +218,7 @@ export default function PhotoGalleryEditor({
     setCoverProgress(30);
     setError('');
     try {
-      const ext = file.name.split('.').pop();
+      const ext = getExtension(file);
       const url = await uploadToStorage(`${memorialId}/cover.${ext}`, file);
       setCoverProgress(80);
       await supabase.from('memorials').update({ cover_image_url: url }).eq('id', memorialId);

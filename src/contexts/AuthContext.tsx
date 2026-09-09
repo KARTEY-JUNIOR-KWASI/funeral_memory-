@@ -25,14 +25,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    // Listen for auth changes
+    // onAuthStateChange fires immediately with the current session (INITIAL_SESSION event),
+    // so we don't need a separate getSession() call. Using both causes a race condition:
+    // getSession resolves first → loading=false, user=null → flash redirect to login.
+    // The listener is the single source of truth for auth state.
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);

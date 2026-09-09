@@ -7,7 +7,7 @@ interface Props {
   initialTributes: PublicTribute[];
 }
 
-export default function TributeModeration({ initialTributes }: Props) {
+export default function TributeModeration({ memorialId: _memorialId, initialTributes }: Props) {
   const [tributes, setTributes] = useState<PublicTribute[]>(initialTributes);
   const [processing, setProcessing] = useState<string | null>(null);
 

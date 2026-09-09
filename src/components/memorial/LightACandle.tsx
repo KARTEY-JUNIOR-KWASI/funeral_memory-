@@ -29,11 +29,23 @@ export default function LightACandle({ memorialId, memorialName, initialCount }:
 
     try {
       if (isSupabaseConfigured) {
-        // Call the candle insert — rate limiting via RLS + backend
+        // Build a browser fingerprint as a stand-in for ip_hash until
+        // a proper Supabase Edge Function is implemented.
+        // TODO: Replace with an Edge Function at /functions/light-candle
+        //       that hashes req.headers['x-forwarded-for'] server-side.
+        const fingerprint = [
+          navigator.language,
+          screen.width,
+          screen.height,
+          screen.colorDepth,
+          Intl.DateTimeFormat().resolvedOptions().timeZone,
+          navigator.platform,
+        ].join('|');
+
         const { error } = await supabase.from('candles').insert({
           memorial_id: memorialId,
-          ip_hash: 'client-side', // server-side hashing in Edge Function
-          fingerprint: navigator.userAgent.slice(0, 50),
+          ip_hash: fingerprint,
+          fingerprint: navigator.userAgent.slice(0, 100),
         });
         if (error) throw error;
       }
