@@ -70,7 +70,11 @@ export default function CreateMemorialModal({ onClose }: Props) {
       // Navigate to the new memorial's editor
       navigate(`/admin/memorials/${data.id}`);
     } catch (err: any) {
-      setError(err.message || 'Failed to create memorial. Please try again.');
+      if (err.message?.includes('memorials_slug_key')) {
+        setError(`The URL slug "${slug}" is already taken. Please choose a different one.`);
+      } else {
+        setError(err.message || 'Failed to create memorial. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
