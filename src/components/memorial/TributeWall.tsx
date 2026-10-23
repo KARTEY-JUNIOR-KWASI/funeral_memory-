@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { formatTributeAuthor } from '../../lib/utils';
 import type { PublicTribute } from '../../types/memorial';
@@ -179,9 +179,58 @@ function LeaveMemoryForm({ memorialId, onSuccess }: { memorialId: string; onSucc
   );
 }
 
-export default function TributeWall({ memorialId, tributes }: Props) {
+export default function TributeWall({ memorialId, tributes: initialTributes }: Props) {
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  // Local copy of tributes — updated in real-time via Supabase Realtime
+  const [tributes, setTributes] = useState<PublicTribute[]>(initialTributes);
+
+  // ── Realtime subscription ────────────────────────────────────
+  // When an admin approves a tribute, it should appear here live.
+  useEffect(() => {
+    if (!isSupabaseConfigured) return;
+
+    const channel = supabase
+      .channel(`tributes-public-${memorialId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'tributes',
+          filter: `memorial_id=eq.${memorialId}`,
+        },
+        (payload) => {
+          const updated = payload.new as PublicTribute;
+          if (updated.status === 'approved') {
+            // If it's newly approved and not already in the list, prepend it.
+            setTributes(prev => {
+              const exists = prev.some(t => t.id === updated.id);
+              if (exists) {
+                // Update in place (e.g., previously hidden, now approved)
+                return prev.map(t => t.id === updated.id ? updated : t);
+              }
+              // New approval — add to front
+              return [updated, ...prev];
+            });
+          } else {
+            // If it's been moved away from approved, remove it from the public view
+            setTributes(prev => prev.filter(t => t.id !== updated.id || t.status === 'approved'));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [memorialId]);
+
+  // Keep in sync if parent re-fetches and passes new initial tributes
+  useEffect(() => {
+    setTributes(initialTributes);
+  }, [initialTributes]);
 
   return (
     <section id="tributes" style={{ background: 'var(--color-surface-warm)', padding: 'var(--space-12) 0' }}>

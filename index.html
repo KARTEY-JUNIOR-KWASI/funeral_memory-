@@ -1,39 +1,1530 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=5">
+<title>In Loving Memory of Obaapayin Juliana Oforiwaa Amagyei (Ante) • 1941 – 2025</title>
+<meta name="description" content="Celebration of the life and legacy of Obaapayin Juliana Oforiwaa Amagyei (Ante). Born 14 Nov 1941 • Went home 13 Dec 2025, aged 84. View digital brochure & leave a tribute.">
+<meta name="theme-color" content="#0b0c0e">
 
-    <!-- Primary Meta -->
-    <title>Digital Memorial — Honour a Life, Beautifully</title>
-    <meta name="description" content="A permanent digital memorial connected to a printed QR code. Scan to access a beautiful, private tribute to your loved one." />
-    <meta name="theme-color" content="#0a0907" />
-    <meta name="color-scheme" content="light" />
+<!-- Open Graph / Social sharing (WhatsApp, Facebook, iMessage) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="In Loving Memory of Obaapayin Juliana Oforiwaa Amagyei (Ante)">
+<meta property="og:description" content="Celebration of life service — Saturday 31 October 2026. View the programme, listen to hymns, and leave a tribute.">
+<meta property="og:image" content="pages/s01.jpg">
+<meta property="og:image:alt" content="Funeral programme of Obaapayin Juliana Oforiwaa Amagyei">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="In Loving Memory of Obaapayin Juliana Oforiwaa Amagyei">
+<meta name="twitter:description" content="Celebration of life service — Asuom, Eastern Region.">
+<meta name="twitter:image" content="pages/s01.jpg">
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Digital Memorial" />
-    <meta property="og:description" content="Honour a life, beautifully. Scan the QR code to access the memorial." />
-    <meta property="og:url" content="https://your-app.vercel.app" />
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Digital Memorial" />
-    <meta name="twitter:description" content="Honour a life, beautifully. Scan the QR code to access the memorial." />
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Hanken+Grotesk:wght@400..700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap">
 
-    <!-- Apple Mobile -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<!-- Supabase JS (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<style>
+/* ───────────────────────────────────────────────────────────
+   Design tokens & variables
+   ─────────────────────────────────────────────────────────── */
+:root {
+  --stage: #0a0b0d;
+  --stage-fg: #f2efe9;
+  --stage-mute: #9aa0a6;
+  --ctl: #15171b;
+  --ctl-line: #2b2f36;
+  --ctl-fg: #f2efe9;
+  --shadow: rgba(0,0,0,.65);
+  --paper: #fdfcf9;
+  --ink: #17181b;
+  --ink-soft: #4a4c52;
+  --rule: #ddd8cd;
+  --gold: #c69f4c;
+  --gold-glow: rgba(198,159,76,.28);
+  --foil: #d1ab5a;
+  --foil-a: #b88a35;
+  --foil-b: #ecd08a;
+  --cover: #101012;
+  --reader-bg: rgba(7,8,10,.97);
+  --reader-fg: #efece5;
+  --reader-line: rgba(239,236,229,.22);
+  --f-display: 'Bodoni Moda','Didot',Georgia,serif;
+  --f-body: 'Newsreader',Georgia,'Times New Roman',serif;
+  --f-label: 'Hanken Grotesk',system-ui,-apple-system,sans-serif;
+  --pw: 390px;
+  --ar: 1.414;
+  --dock-h: 68px;
+}
 
-    <!-- Google Fonts preconnect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+[data-theme="light"] {
+  --stage: #ece9e2;
+  --stage-fg: #15171a;
+  --stage-mute: #5d636b;
+  --ctl: #ffffff;
+  --ctl-line: #cdd2d8;
+  --ctl-fg: #15171a;
+  --shadow: rgba(10,12,14,.35);
+  --cover: #1a1a1e;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html {
+  height: 100%;
+  background: var(--stage);
+  color: var(--stage-fg);
+  font-family: var(--f-label);
+}
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--stage);
+  color: var(--stage-fg);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  padding-bottom: calc(var(--dock-h) + env(safe-area-inset-bottom, 12px) + 8px);
+}
+button { font: inherit; color: inherit; border: none; background: none; cursor: pointer; }
+img { max-width: 100%; display: block; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--foil); outline-offset: 2px; }
+
+/* ── Top Header Bar ── */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 8px 16px;
+  background: rgba(10,11,13,.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.brand-cross {
+  color: var(--gold);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+.brand-text {
+  min-width: 0;
+}
+.brand-tag {
+  font-size: .62rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  display: block;
+}
+.brand-name {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: .88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: .02em;
+}
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Floating Equalizer Pill (Header / Player) ── */
+.now-playing-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(26,28,34,.9);
+  border: 1px solid rgba(198,159,76,.4);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--foil-b);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.now-playing-pill:hover { border-color: var(--foil); background: rgba(36,40,48,.95); }
+.eq-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+.eq-bar {
+  width: 2.5px;
+  background: var(--foil);
+  border-radius: 1px;
+  height: 3px;
+  transition: height .15s ease;
+}
+.playing .eq-bar:nth-child(1) { animation: eqJump .8s infinite alternate ease-in-out; }
+.playing .eq-bar:nth-child(2) { animation: eqJump 1.1s infinite alternate ease-in-out .2s; }
+.playing .eq-bar:nth-child(3) { animation: eqJump .7s infinite alternate ease-in-out .4s; }
+@keyframes eqJump { 0% { height: 3px; } 100% { height: 12px; } }
+
+/* ── Main Stage ── */
+main#stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 10px 0;
+  touch-action: pan-y;
+}
+
+/* ── Mobile Rail (Swipeable cards) ── */
+.rail {
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-block: 8px 18px;
+  padding-inline: calc((100% - var(--pw)) / 2);
+  align-items: center;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar { display: none; }
+.slide {
+  flex: 0 0 var(--pw);
+  height: calc(var(--pw) * var(--ar));
+  scroll-snap-align: center;
+  position: relative;
+  background: var(--cover);
+  box-shadow: 0 12px 36px var(--shadow), 0 2px 8px rgba(0,0,0,.5);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: transform .25s ease;
+}
+.slide:active { transform: scale(.985); }
+.slide-watermark {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  background: rgba(10,12,14,.7);
+  backdrop-filter: blur(8px);
+  color: var(--foil-b);
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: .68rem;
+  letter-spacing: .06em;
+  font-weight: 600;
+  pointer-events: none;
+  border: 1px solid rgba(198,159,76,.3);
+}
+
+/* ── Desktop Book (Large screens) ── */
+.book {
+  position: relative;
+  width: calc(var(--pw) * 2);
+  height: calc(var(--pw) * var(--ar));
+  perspective: 2800px;
+  transition: transform .9s cubic-bezier(.5,.05,.2,1);
+}
+.book[data-pos="start"] { transform: translateX(calc(var(--pw) * -.5)); }
+.book[data-pos="end"] { transform: translateX(calc(var(--pw) * .5)); }
+.book-shadow {
+  position: absolute; left: 50%; bottom: -18px; width: 90%; height: 36px;
+  transform: translateX(-50%); background: radial-gradient(closest-side,var(--shadow),transparent);
+  filter: blur(6px); pointer-events: none;
+}
+.leaf {
+  position: absolute; left: 50%; top: 0; width: var(--pw); height: 100%;
+  transform-origin: left center; transform-style: preserve-3d;
+  transition: transform .95s cubic-bezier(.5,.05,.2,1);
+}
+.leaf.flipped { transform: rotateY(-180deg); }
+.face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; overflow: hidden; background: var(--cover);
+}
+.face.back { transform: rotateY(180deg); }
+.face.front { cursor: e-resize; border-radius: 0 4px 4px 0; box-shadow: 0 1px 3px var(--shadow); }
+.face.back { cursor: w-resize; border-radius: 4px 0 0 4px; }
+.face::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.face.front::after { background: linear-gradient(to right,rgba(0,0,0,.26),rgba(0,0,0,.06) 3%,transparent 10%); }
+.face.back::after { background: linear-gradient(to left,rgba(0,0,0,.22),rgba(0,0,0,.05) 3%,transparent 10%); }
+.pgwrap { position: absolute; inset: 0; }
+.pg { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-drag: none; }
+
+/* ── Magnifier Pill on Pages ── */
+.mag {
+  position: absolute; top: 10px; width: 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer;
+  background: rgba(10,10,12,.78); color: var(--foil-b);
+  border: 1px solid var(--foil-a); opacity: .82; z-index: 4; padding: 0;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  transition: opacity .15s ease, transform .15s ease;
+}
+.mag:hover { opacity: 1; transform: scale(1.08); }
+.mag svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.face.front .mag, .slide .mag { right: 12px; }
+.face.back .mag { left: 12px; }
+
+/* ── Page Indicator & Navigation Bar ── */
+.page-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 4px 16px 8px;
+}
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(22,24,28,.85);
+  border: 1px solid var(--ctl-line);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--stage-mute);
+  font-variant-numeric: tabular-nums;
+}
+.nav-btn {
+  background: rgba(26,28,34,.9);
+  border: 1px solid var(--ctl-line);
+  color: var(--stage-fg);
+  border-radius: 999px;
+  padding: 7px 15px;
+  font-size: .8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .15s ease;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--foil); color: var(--foil-b); }
+.nav-btn:disabled { opacity: .3; cursor: default; }
+
+/* ── Quick Hint / Touch helper ── */
+.swipe-hint {
+  text-align: center;
+  font-size: .72rem;
+  color: var(--stage-mute);
+  letter-spacing: .04em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE FLOATING DOCK (Thumb-First Navigation)
+   ══════════════════════════════════════════════════════════════ */
+.dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(13,15,18,.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(198,159,76,.25);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 10px));
+  box-shadow: 0 -8px 24px rgba(0,0,0,.6);
+}
+.dock-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--stage-mute);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  padding: 5px 8px;
+  border-radius: 8px;
+  min-width: 54px;
+  text-decoration: none;
+  transition: all .15s ease;
+  position: relative;
+}
+.dock-item svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.dock-item:hover, .dock-item:active {
+  color: var(--foil-b);
+  transform: translateY(-2px);
+}
+.dock-item.active {
+  color: var(--foil);
+}
+.dock-item .badge {
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  background: var(--gold);
+  color: #101012;
+  font-size: .56rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 999px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ENTRANCE OF HONOR (Ambient Welcome Splash Overlay)
+   ══════════════════════════════════════════════════════════════ */
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: radial-gradient(circle at center 35%, #181920 0%, #0a0b0d 75%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  transition: opacity .7s ease, visibility .7s ease;
+}
+.welcome-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.welcome-card {
+  max-width: 360px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: modalPop .8s cubic-bezier(.16, 1, .3, 1);
+}
+@keyframes modalPop {
+  0% { opacity: 0; transform: scale(.92) translateY(16px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.welcome-photo-frame {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--foil-b), var(--foil-a), var(--gold));
+  box-shadow: 0 0 30px var(--gold-glow), 0 10px 24px rgba(0,0,0,.7);
+  margin-bottom: 20px;
+  position: relative;
+}
+.welcome-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.welcome-memorial-tag {
+  font-size: .68rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.welcome-title {
+  margin: 0 0 6px;
+  font-family: var(--f-display);
+  font-size: 1.45rem;
+  line-height: 1.25;
+  color: #fff;
+  font-weight: 600;
+}
+.welcome-sub {
+  margin: 0 0 14px;
+  font-family: var(--f-body);
+  font-style: italic;
+  font-size: .95rem;
+  color: var(--foil-b);
+}
+.welcome-dates {
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--stage-mute);
+  margin-bottom: 24px;
+}
+.welcome-akan {
+  font-size: .82rem;
+  color: #c9cbcf;
+  font-family: var(--f-body);
+  font-style: italic;
+  margin-bottom: 26px;
+  border-top: 1px solid rgba(198,159,76,.3);
+  border-bottom: 1px solid rgba(198,159,76,.3);
+  padding: 8px 16px;
+}
+.welcome-enter-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #d1ab5a, #a67c29);
+  color: #101012;
+  font-weight: 700;
+  font-size: .95rem;
+  letter-spacing: .06em;
+  padding: 16px 20px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(198,159,76,.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.welcome-enter-btn:active {
+  transform: scale(.97);
+}
+.welcome-silent-btn {
+  margin-top: 14px;
+  font-size: .78rem;
+  color: var(--stage-mute);
+  text-decoration: underline;
+  padding: 6px;
+  cursor: pointer;
+}
+.welcome-silent-btn:hover { color: #fff; }
+
+/* ══════════════════════════════════════════════════════════════
+   MUSIC PLAYLIST DRAWER / MINI PLAYER
+   ══════════════════════════════════════════════════════════════ */
+.music-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 70;
+  background: #14161a;
+  border-top: 1px solid var(--foil-a);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 20px calc(24px + env(safe-area-inset-bottom, 12px));
+  box-shadow: 0 -12px 40px rgba(0,0,0,.8);
+  transform: translateY(100%);
+  transition: transform .35s cubic-bezier(.16, 1, .3, 1);
+}
+.music-drawer.open {
+  transform: translateY(0);
+}
+.music-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.music-drawer-header .x {
+  min-width: 44px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  color: var(--stage-mute);
+  cursor: pointer;
+  border-radius: 50%;
+  transition: color .15s ease;
+}
+.music-drawer-header .x:hover { color: #fff; }
+.music-drawer-title {
+  font-size: .78rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin: 0;
+}
+.track-list {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.track-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1b1e24;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.track-item.current {
+  border-color: var(--gold);
+  background: rgba(198,159,76,.12);
+}
+.track-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+.track-name {
+  font-weight: 600;
+  font-size: .9rem;
+  color: #fff;
+}
+.track-artist {
+  font-size: .75rem;
+  color: var(--stage-mute);
+}
+.track-play-badge {
+  color: var(--gold);
+  font-size: .8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.music-playback-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+.music-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #252932;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ctl-line);
+}
+.music-btn.primary {
+  width: 58px;
+  height: 58px;
+  background: var(--gold);
+  color: #101012;
+  box-shadow: 0 4px 16px var(--gold-glow);
+}
+.music-btn svg { width: 22px; height: 22px; fill: currentColor; }
+
+/* ══════════════════════════════════════════════════════════════
+   FULLSCREEN READER (Magnifier View)
+   ══════════════════════════════════════════════════════════════ */
+.reader {
+  position: fixed; inset: 0; z-index: 80;
+  background: var(--reader-bg); color: var(--reader-fg);
+  display: flex; flex-direction: column;
+}
+.rd-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px 16px;
+  border-bottom: 1px solid var(--reader-line);
+}
+.rd-title { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
+.rd-title small { display: block; letter-spacing: .04em; text-transform: none; font-weight: 400; opacity: .75; font-size: 11px; margin-top: 2px; }
+.rd-ctl { display: flex; gap: 8px; }
+.rd-ctl button {
+  background: rgba(255,255,255,.08); border: 1px solid var(--reader-line); color: var(--reader-fg);
+  min-width: 38px; height: 38px; padding: 0 12px; cursor: pointer; font-size: 13px; font-weight: 600; border-radius: 999px;
+}
+.rd-ctl button:hover { border-color: var(--foil); color: var(--foil-b); }
+.rd-scroll {
+  flex: 1; min-height: 0; overflow: auto; padding: 14px;
+  touch-action: pan-x pan-y pinch-zoom; -webkit-overflow-scrolling: touch;
+}
+.rd-scroll img { display: block; margin: 0 auto; max-width: none; height: auto; border-radius: 4px; box-shadow: 0 8px 30px rgba(0,0,0,.8); }
+
+/* ══════════════════════════════════════════════════════════════
+   DRAWERS (Contents & Tributes)
+   ══════════════════════════════════════════════════════════════ */
+.scrim { position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); z-index: 60; }
+.drawer {
+  position: fixed; right: 0; top: 0; bottom: 0; width: min(460px, 92vw);
+  background: var(--paper); color: var(--ink); z-index: 65;
+  display: flex; flex-direction: column; box-shadow: -8px 0 36px rgba(0,0,0,.5);
+}
+.drawer header {
+  padding: calc(14px + env(safe-area-inset-top,0px)) 20px 14px;
+  border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: flex-start;
+}
+.drawer .lab { font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; color: var(--gold); }
+.drawer h2 { margin: 2px 0 0; font-family: var(--f-display); font-size: 1.3rem; font-weight: 600; }
+.drawer .x { font-size: 1.8rem; line-height: 1; padding: 0 4px; color: var(--ink-soft); }
+.drawer .scroll { flex: 1; overflow-y: auto; padding: 20px; }
+.drawer form { padding: 18px 20px calc(24px + env(safe-area-inset-bottom, 12px)); border-top: 1px solid var(--rule); background: #faf8f5; }
+.drawer .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.drawer .field label { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
+.drawer input, .drawer textarea {
+  font: inherit; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 6px; background: #fff; color: var(--ink);
+}
+.drawer input:focus, .drawer textarea:focus { outline: 2px solid var(--gold); }
+.drawer .send-btn {
+  width: 100%; background: var(--gold); color: #101012; font-weight: 700; font-size: .9rem;
+  letter-spacing: .08em; text-transform: uppercase; padding: 13px; border-radius: 999px;
+  transition: opacity .15s ease;
+}
+.drawer .send-btn:disabled { opacity: .4; }
+.tw-item { list-style: none; border-bottom: 1px solid var(--rule); padding: 14px 0; }
+.tw-item q { font-family: var(--f-body); font-size: 1.05rem; line-height: 1.45; font-style: italic; quotes: "“" "”"; display: block; margin-bottom: 6px; }
+.tw-meta { font-size: .76rem; color: var(--ink-soft); display: flex; justify-content: space-between; gap: 8px; }
+.tw-empty { list-style: none; text-align: center; color: var(--ink-soft); padding: 26px 0; font-style: italic; }
+
+/* Info drawer facts */
+.facts { margin: 0 0 20px; padding: 0; }
+.facts>div { padding: 10px 0; border-top: 1px solid var(--rule); }
+.facts>div:last-child { border-bottom: 1px solid var(--rule); }
+.facts dt { font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; color: var(--gold); }
+.facts dd { margin: 3px 0 0; font-size: .95rem; line-height: 1.4; }
+.toc { list-style: none; margin: 0; padding: 0; }
+.toc li { border-bottom: 1px solid var(--rule); }
+.toc button {
+  width: 100%; display: flex; justify-content: space-between; align-items: baseline;
+  padding: 12px 0; text-align: left; font-family: var(--f-body); font-size: 1.05rem;
+}
+.toc button:hover b { color: var(--gold); }
+.toc b { font-family: var(--f-label); font-size: .74rem; letter-spacing: .08em; color: var(--ink-soft); }
+
+/* Slots */
+.slot-row { display: none; }
+.slot-row.active { display: block; }
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: rgba(20,23,28,.95);
+  color: var(--foil-b);
+  border: 1px solid var(--gold);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,.6);
+  z-index: 120;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .3s ease;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (min-width: 900px) {
+  :root { --pw: 430px; }
+  .dock { display: none; }
+  body { padding-bottom: 16px; }
+  .top-actions { display: flex; }
+}
+@media (max-width: 899px) {
+  .top-actions .desktop-only { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- SVG Sprite Definitions -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></symbol>
+    <symbol id="i-pen"  viewBox="0 0 24 24"><path d="M4 20l1-4L17 4l3 3L8 19z"/><path d="M14 7l3 3"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+    <symbol id="i-dl"   viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 20h14"/></symbol>
+    <symbol id="i-zoom" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5M10.5 8v5M8 10.5h5"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+  </defs>
+</svg>
+
+<!-- ── Top Header ────────────────────────────────────── -->
+<header class="top-bar">
+  <div class="brand">
+    <span class="brand-cross" aria-hidden="true">✝</span>
+    <div class="brand-text">
+      <span class="brand-tag">Celebration of Life</span>
+      <h1 class="brand-name">Obaapayin Juliana Oforiwaa Amagyei</h1>
+    </div>
+  </div>
+  <div class="top-actions">
+    <!-- Mini Equalizer Pill -->
+    <button class="now-playing-pill" id="header-music-btn" type="button" aria-label="Toggle or choose memorial music">
+      <div class="eq-bars" id="header-eq">
+        <span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span>
+      </div>
+      <span id="header-track-name">Gone Forever</span>
+    </button>
+    <button class="nav-btn desktop-only" id="dt-tributes" type="button">Tributes</button>
+    <button class="nav-btn desktop-only" id="dt-contents" type="button">Programme</button>
+    <a class="nav-btn desktop-only" href="programme.pdf" download="Brochure-Juliana-Amagyei.pdf">PDF</a>
+  </div>
+</header>
+
+<!-- ── Main Stage (Viewer) ───────────────────────────── -->
+<main id="stage" aria-label="Funeral brochure viewer"></main>
+
+<!-- ── Page Controls & Hint ─────────────────────────── -->
+<div class="page-nav-bar">
+  <button class="nav-btn" id="prev" type="button" aria-label="Previous page">←</button>
+  <span class="nav-pill" id="nav-label" aria-live="polite">Cover</span>
+  <button class="nav-btn" id="next" type="button" aria-label="Next page">→</button>
+</div>
+<p class="swipe-hint" id="hint">Swipe sideways to turn pages • Tap page to read large</p>
+
+<!-- ── Mobile Floating Dock (Thumb-first app bar) ───── -->
+<nav class="dock" aria-label="Quick mobile navigation">
+  <button class="dock-item" id="dock-read" type="button">
+    <svg viewBox="0 0 24 24"><use href="#i-zoom"/></svg>
+    <span>Read</span>
+  </button>
+  <button class="dock-item" id="dock-tributes" type="button">
+    <svg viewBox="0 0 24 24"><use href="#i-pen"/></svg>
+    <span>Tributes</span>
+    <span class="badge" id="dock-tb-badge" hidden>0</span>
+  </button>
+  <button class="dock-item" id="dock-info" type="button">
+    <svg viewBox="0 0 24 24"><use href="#i-list"/></svg>
+    <span>Order</span>
+  </button>
+  <button class="dock-item active" id="dock-music" type="button">
+    <svg viewBox="0 0 24 24"><use href="#i-note"/></svg>
+    <span>Music</span>
+  </button>
+  <button class="dock-item" id="dock-share" type="button">
+    <svg viewBox="0 0 24 24"><use href="#i-share"/></svg>
+    <span>Share</span>
+  </button>
+  <a class="dock-item" id="dock-pdf" href="programme.pdf" download="Brochure-Juliana-Amagyei.pdf">
+    <svg viewBox="0 0 24 24"><use href="#i-dl"/></svg>
+    <span>PDF</span>
+  </a>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════
+     ENTRANCE OF HONOR (Autoplay & Reverent Splash)
+     ══════════════════════════════════════════════════════ -->
+<div class="welcome-overlay" id="welcome-modal" role="dialog" aria-modal="true" aria-label="Welcome to Memorial">
+  <div class="welcome-card">
+    <div class="welcome-photo-frame">
+      <img src="pages/s01.jpg" alt="Portrait of Obaapayin Juliana Oforiwaa Amagyei">
+    </div>
+    <span class="welcome-memorial-tag">In Loving Memory</span>
+    <h2 class="welcome-title">Obaapayin Juliana<br>Oforiwaa Amagyei</h2>
+    <p class="welcome-sub">(Ante)</p>
+    <div class="welcome-dates">14 Nov 1941 – 13 Dec 2025 • 84 Years</div>
+    <div class="welcome-akan">“Damirifa Due, Obaapayin Juliana. Nante Yie Ante.”</div>
+
+    <button class="welcome-enter-btn" id="welcome-play-btn" type="button">
+      <span>🕊️</span>
+      <span>Enter Memorial</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     MUSIC PLAYLIST DRAWER
+     ══════════════════════════════════════════════════════ -->
+<div class="music-drawer" id="music-drawer" role="dialog" aria-modal="true" aria-label="Music playlist">
+  <div class="music-drawer-header">
+    <h3 class="music-drawer-title">Memorial Hymns & Dirges</h3>
+    <button class="x" id="close-music-drawer" type="button" aria-label="Close music playlist" style="font-size:1.6rem;color:var(--stage-mute)">×</button>
+  </div>
+  <ul class="track-list" id="track-list">
+    <li class="track-item current" data-track="0">
+      <div class="track-item-info">
+        <span class="track-name">Gone Forever</span>
+        <span class="track-artist">Chidinma</span>
+      </div>
+      <span class="track-play-badge">Playing ♫</span>
+    </li>
+    <li class="track-item" data-track="1">
+      <div class="track-item-info">
+        <span class="track-name">Yɛbɛhyia Bio</span>
+        <span class="track-artist">Presbyterian Choral Hymn</span>
+      </div>
+      <span class="track-play-badge" hidden>Select</span>
+    </li>
+    <li class="track-item" data-track="2">
+      <div class="track-item-info">
+        <span class="track-name">Lead, Kindly Light</span>
+        <span class="track-artist">Sacred Chimes & Organ</span>
+      </div>
+      <span class="track-play-badge" hidden>Select</span>
+    </li>
+    <li class="track-item" data-track="3">
+      <div class="track-item-info">
+        <span class="track-name">Abide With Me</span>
+        <span class="track-artist">Reverent Piano Hymn</span>
+      </div>
+      <span class="track-play-badge" hidden>Select</span>
+    </li>
+  </ul>
+  <div class="music-playback-controls">
+    <button class="music-btn" id="m-prev" type="button" aria-label="Previous track">⏮</button>
+    <button class="music-btn primary" id="m-toggle" type="button" aria-label="Play or pause">⏸</button>
+    <button class="music-btn" id="m-next" type="button" aria-label="Next track">⏭</button>
+  </div>
+</div>
+
+<!-- ── Fullscreen Reader Overlay ─────────────────────── -->
+<div class="reader" id="reader" hidden role="dialog" aria-modal="true" aria-label="Read page larger">
+  <div class="rd-bar">
+    <div class="rd-title" id="rd-title"></div>
+    <div class="rd-ctl">
+      <button id="rd-prev"  type="button" aria-label="Previous page">←</button>
+      <button id="rd-next"  type="button" aria-label="Next page">→</button>
+      <button id="rd-out"   type="button" aria-label="Smaller">−</button>
+      <button id="rd-in"    type="button" aria-label="Larger">+</button>
+      <button id="rd-close" type="button">Close ✕</button>
+    </div>
+  </div>
+  <div class="rd-scroll" id="rd-scroll"><img id="rd-img" alt=""></div>
+</div>
+
+<!-- ── Drawer Scrim ──────────────────────────────────── -->
+<div class="scrim" id="scrim" hidden></div>
+
+<!-- ── Contents & Order Drawer ───────────────────────── -->
+<aside class="drawer" id="info" hidden role="dialog" aria-modal="true" aria-labelledby="in-title">
+  <header>
+    <div>
+      <span class="lab">Programme details</span>
+      <h2 id="in-title">Celebrating Ante's Life</h2>
+    </div>
+    <button class="x" type="button" data-close aria-label="Close">×</button>
+  </header>
+  <div class="scroll">
+    <dl class="facts">
+      <div><dt>When</dt><dd>Saturday 31 October 2026<br>Burial Service at 9:00 AM</dd></div>
+      <div><dt>Where</dt><dd>At her residence<br>Presbyterian Church of Ghana, Grace Congregation, Asuom</dd></div>
+      <div><dt>Born</dt><dd>14 November 1941, Twapease, Asuom</dd></div>
+      <div><dt>Went Home</dt><dd>13 December 2025, aged 84</dd></div>
+      <div class="slot-row" id="slot-dress"><dt>Dress code</dt><dd id="slot-dress-val"></dd></div>
+      <div class="slot-row" id="slot-momo"><dt>Mobile Money (Donations)</dt><dd id="slot-momo-val"></dd></div>
+      <div class="slot-row" id="slot-live"><dt>Livestream</dt><dd><a id="slot-live-url" href="#" target="_blank" rel="noopener">Watch Service Online</a></dd></div>
+    </dl>
+    <h3>Table of Contents</h3>
+    <ul class="toc" id="toc"></ul>
+  </div>
+</aside>
+
+<!-- ── Tributes Drawer ───────────────────────────────── -->
+<aside class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="tr-title">
+  <header>
+    <div>
+      <span class="lab">Memorial wall</span>
+      <h2 id="tr-title">Tributes for Ante</h2>
+    </div>
+    <button class="x" type="button" data-close aria-label="Close">×</button>
+  </header>
+  <div class="scroll">
+    <ul class="tw-list" id="dr-list"></ul>
+  </div>
+  <form id="tform" novalidate>
+    <div class="field">
+      <label for="tr-name">Your name</label>
+      <input id="tr-name" type="text" maxlength="60" required placeholder="e.g. Ama Oforiwaa">
+    </div>
+    <div class="field">
+      <label for="tr-rel">Your relationship (optional)</label>
+      <input id="tr-rel" type="text" maxlength="40" placeholder="e.g. Grandchild, Church Member, Friend">
+    </div>
+    <div class="field">
+      <label for="tr-text">Your tribute or memory</label>
+      <textarea id="tr-text" rows="3" maxlength="500" required placeholder="Share a prayer, favourite memory, or farewell message..."></textarea>
+    </div>
+    <button class="send-btn" id="tr-send" type="submit">Leave a Tribute</button>
+    <p class="msg" id="tr-msg" role="status" style="margin:8px 0 0;font-size:.78rem;color:var(--ink-soft);"></p>
+  </form>
+</aside>
+
+<!-- Toast notification pill -->
+<div class="toast" id="toast">Link copied to clipboard!</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ──────────────────────────────────────────────────────────
+     CONFIGURATION
+     ────────────────────────────────────────────────────────── */
+  var SUPABASE_URL  = 'https://gtxlqzjwxjboxhiictqs.supabase.co';
+  var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0eGxxemp3eGpib3hoaWljdHFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4NTc5MjIsImV4cCI6MjEwNDQzMzkyMn0.nXce0OHkC470RgV6eSH0ABn3WKEiTtCUCui2e1usjus';
+  var MEMORIAL_ID   = null;
+
+  var DRESS_CODE   = '';
+  var MOMO_DETAILS = '';
+  var LIVESTREAM   = '';
+
+  /* ──────────────────────────────────────────────────────────
+     PAGE DATA (22 Pages)
+     ────────────────────────────────────────────────────────── */
+  var TOTAL = 22;
+  var LABELS = [
+    'Front cover', 'Her portrait', 'Order of service', 'Biography', 'Biography, continued',
+    'A family portrait', 'Tributes', 'Tribute by children', 'Photo gallery, children',
+    'Tribute by grandchildren', 'Tribute by grandchildren, continued',
+    'Photographs of the grandchildren', 'Photographs of the grandchildren, continued',
+    'Tribute by great-grandchildren', 'Tribute by in-laws',
+    'Tribute by the Presbyterian Church', 'Tribute by the Presbyterian Church, continued',
+    'Life in pictures', 'Photographs', 'Hymns', 'Hymns, continued', 'Appreciation'
+  ];
+  var TOC = [
+    ['Order of service', 3], ['Biography', 4], ['Tributes by children', 8],
+    ['Tributes by grandchildren', 10], ['Tribute by great-grandchildren', 14],
+    ['Tribute by in-laws', 15], ['Tribute by the Presbyterian Church', 16],
+    ['Life in pictures', 18], ['Hymns', 20], ['Appreciation', 22]
+  ];
+  var NL = TOTAL / 2;
+
+  function $(s, r) { return (r || document).querySelector(s); }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function sm(i) { return 'pages/s' + pad(i + 1) + '.jpg'; }
+  function lg(i) { return 'pages/l' + pad(i + 1) + '.jpg'; }
+  var MAG = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-zoom"/></svg>';
+
+  function pageEl(i) {
+    var eager = i < 4;
+    return '<div class="pgwrap"><img class="pg" src="' + sm(i) + '" alt="Page ' + (i+1) + ' of ' + TOTAL + ': ' + LABELS[i] + '" draggable="false" decoding="async"' + (eager ? '' : ' loading="lazy"') + '>' +
+      '<button class="mag" type="button" data-read="' + i + '" aria-label="Read page ' + (i+1) + ' larger">' + MAG + '</button>' +
+      '<span class="slide-watermark">Page ' + (i+1) + '</span></div>';
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     TOAST HELPER
+     ────────────────────────────────────────────────────────── */
+  var toastEl = $('#toast');
+  var toastTimer = null;
+  function showToast(text) {
+    if (!toastEl) return;
+    toastEl.textContent = text;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 3000);
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     AUDIO ENGINE: "GONE FOREVER" & GHANAIAN HYMNS
+     ────────────────────────────────────────────────────────── */
+  var PLAYLIST = [
+    { title: 'Gone Forever', artist: 'Chidinma', src: 'audio/gone-forever.mp3' },
+    { title: 'Yɛbɛhyia Bio', artist: 'Presbyterian Choral Hymn', src: 'audio/yebehyia-bio.mp3' },
+    { title: 'Lead, Kindly Light', artist: 'Sacred Chimes & Organ', src: 'audio/lead-kindly-light.mp3' },
+    { title: 'Abide With Me', artist: 'Reverent Piano Hymn', src: 'audio/abide-with-me.mp3' },
+  ];
+  var currentTrackIdx = 0;
+  var isPlaying = false;
+  var audioElem = new Audio();
+  audioElem.loop = true;
+  audioElem.preload = 'auto';
+
+  /* Web Audio Synthesizer fallback for pure uninterrupted offline/pre-file audio */
+  var webAudioCtx = null, synthTimer = null, synthGain = null;
+  function initWebAudioSynth() {
+    if (webAudioCtx) return;
+    try {
+      var AudioContext = window.AudioContext || window.webkitAudioContext;
+      webAudioCtx = new AudioContext();
+      synthGain = webAudioCtx.createGain();
+      synthGain.gain.setValueAtTime(0.12, webAudioCtx.currentTime);
+      synthGain.connect(webAudioCtx.destination);
+    } catch (e) {}
+  }
+  function playSynthChord() {
+    if (!webAudioCtx || !isPlaying) return;
+    var chords = [
+      [146.83, 220.00, 261.63, 349.23], // Dm
+      [116.54, 233.08, 293.66, 349.23], // Bb
+      [130.81, 261.63, 329.63, 392.00], // C
+      [174.61, 220.00, 261.63, 349.23]  // F
+    ];
+    var c = chords[Math.floor(Math.random() * chords.length)];
+    c.forEach(function (freq) {
+      var osc = webAudioCtx.createOscillator();
+      var g = webAudioCtx.createGain();
+      var t = webAudioCtx.currentTime;
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.04, t + 1.2);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 4.8);
+      osc.connect(g);
+      g.connect(synthGain);
+      osc.start(t);
+      osc.stop(t + 5.0);
+    });
+    synthTimer = setTimeout(playSynthChord, 4200);
+  }
+
+  function startAudioTrack(idx) {
+    currentTrackIdx = (idx + PLAYLIST.length) % PLAYLIST.length;
+    var track = PLAYLIST[currentTrackIdx];
+    $('#header-track-name').textContent = track.title;
+
+    // Update drawer tracklist badges
+    document.querySelectorAll('.track-item').forEach(function (el, i) {
+      var badge = el.querySelector('.track-play-badge');
+      if (i === currentTrackIdx) {
+        el.classList.add('current');
+        if (badge) { badge.textContent = 'Playing ♫'; badge.hidden = false; }
+      } else {
+        el.classList.remove('current');
+        if (badge) { badge.hidden = true; }
+      }
+    });
+
+    audioElem.pause();
+    audioElem.src = track.src;
+
+    var playPromise = audioElem.play();
+    if (playPromise !== undefined) {
+      playPromise.then(function () {
+        setPlayingState(true);
+      }).catch(function (err) {
+        console.log('[Audio] Primary file not loaded, trying Web Audio fallback:', err.message);
+        initWebAudioSynth();
+        if (webAudioCtx && webAudioCtx.state === 'suspended') webAudioCtx.resume();
+        setPlayingState(true);
+        playSynthChord();
+      });
+    }
+  }
+
+  function setPlayingState(playing) {
+    isPlaying = playing;
+    var pill = $('#header-music-btn');
+    var mToggle = $('#m-toggle');
+    if (playing) {
+      pill.classList.add('playing');
+      if (mToggle) mToggle.textContent = '⏸';
+      $('#dock-music').classList.add('active');
+    } else {
+      pill.classList.remove('playing');
+      if (mToggle) mToggle.textContent = '▶';
+      $('#dock-music').classList.remove('active');
+      clearTimeout(synthTimer);
+    }
+  }
+
+  function toggleAudio() {
+    if (isPlaying) {
+      audioElem.pause();
+      setPlayingState(false);
+    } else {
+      startAudioTrack(currentTrackIdx);
+    }
+  }
+
+  // Audio error fallback
+  audioElem.addEventListener('error', function () {
+    console.warn('[Audio] HTML5 audio error. Engaging ambient Web Audio chime fallback.');
+    initWebAudioSynth();
+    if (webAudioCtx && webAudioCtx.state === 'suspended') webAudioCtx.resume();
+    playSynthChord();
+  });
+
+  /* ──────────────────────────────────────────────────────────
+     WELCOME MODAL (AUTOPLAY ENTRANCE)
+     ────────────────────────────────────────────────────────── */
+  var welcomeModal = $('#welcome-modal');
+  var welcomeBtn = $('#welcome-play-btn');
+  if (welcomeBtn) {
+    welcomeBtn.addEventListener('click', function () {
+      welcomeModal.classList.add('hidden');
+      initWebAudioSynth();
+      startAudioTrack(0); // Play Chidinma - Gone Forever
+      showToast('♫ Playing "Gone Forever" — Chidinma');
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     MUSIC DRAWER & CONTROLS
+     ────────────────────────────────────────────────────────── */
+  var musicDrawer = $('#music-drawer');
+  function openMusicDrawer() {
+    musicDrawer.classList.add('open');
+    $('#scrim').hidden = false;
+  }
+  function closeMusicDrawer() {
+    musicDrawer.classList.remove('open');
+    $('#scrim').hidden = true;
+  }
+  $('#header-music-btn').addEventListener('click', openMusicDrawer);
+  $('#dock-music').addEventListener('click', openMusicDrawer);
+  $('#close-music-drawer').addEventListener('click', closeMusicDrawer);
+
+  $('#m-toggle').addEventListener('click', toggleAudio);
+  $('#m-next').addEventListener('click', function () { startAudioTrack(currentTrackIdx + 1); });
+  $('#m-prev').addEventListener('click', function () { startAudioTrack(currentTrackIdx - 1); });
+
+  document.querySelectorAll('.track-item').forEach(function (el) {
+    el.addEventListener('click', function () {
+      var tIdx = parseInt(el.getAttribute('data-track'), 10);
+      startAudioTrack(tIdx);
+    });
+  });
+
+  /* ──────────────────────────────────────────────────────────
+     SUPABASE CLIENT & TRIBUTES
+     ────────────────────────────────────────────────────────── */
+  var db = null;
+  try { db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON); } catch (e) {}
+
+  var approvedTributes = [];
+  var localTributes = [];
+  var realtimeSub = null;
+  try { localTributes = JSON.parse(localStorage.getItem('ayie-tributes-ante') || '[]') || []; } catch (e) { localTributes = []; }
+
+  function saveLocal() {
+    try { localStorage.setItem('ayie-tributes-ante', JSON.stringify(localTributes.slice(0, 50))); } catch (e) {}
+  }
+  function fmt(at) {
+    try { return new Date(at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); } catch(e) { return ''; }
+  }
+  function itemEl(t) {
+    var li = document.createElement('li');
+    li.className = 'tw-item';
+    var q = document.createElement('q'); q.textContent = t.text || t.message || '';
+    var m = document.createElement('div'); m.className = 'tw-meta';
+    var n = document.createElement('span');
+    n.textContent = (t.name || t.author_name || 'Anonymous') + ((t.rel || t.relationship) ? ' · ' + (t.rel || t.relationship) : '');
+    m.appendChild(n);
+    var dateVal = t.at || t.created_at;
+    if (dateVal) { var d = document.createElement('span'); d.textContent = fmt(dateVal); m.appendChild(d); }
+    li.appendChild(q); li.appendChild(m);
+    return li;
+  }
+  function renderTributes() {
+    var dl = $('#dr-list'); if (!dl) return;
+    dl.innerHTML = '';
+    var list = (db && MEMORIAL_ID) ? approvedTributes : localTributes;
+    var badge = $('#dock-tb-badge');
+    if (badge) {
+      badge.textContent = list.length;
+      badge.hidden = (list.length === 0);
+    }
+    if (!list.length) {
+      var e = document.createElement('li'); e.className = 'tw-empty';
+      e.textContent = 'No tributes yet. Be the first to leave a word for Ante.';
+      dl.appendChild(e);
+    } else {
+      list.forEach(function (t) { dl.appendChild(itemEl(t)); });
+    }
+  }
+
+  function loadTributes() {
+    if (!db || !MEMORIAL_ID) return;
+    db.from('tributes')
+      .select('id,author_name,relationship,message,created_at')
+      .eq('memorial_id', MEMORIAL_ID)
+      .eq('status', 'approved')
+      .order('created_at', { ascending: false })
+      .then(function (res) {
+        if (res.error) return;
+        approvedTributes = (res.data || []).map(function (r) {
+          return { id: r.id, name: r.author_name, rel: r.relationship, text: r.message, at: r.created_at };
+        });
+        renderTributes();
+      });
+
+    if (realtimeSub) { db.removeChannel(realtimeSub); }
+    realtimeSub = db.channel('tributes-public-' + MEMORIAL_ID)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'tributes', filter: 'memorial_id=eq.' + MEMORIAL_ID },
+        function (payload) {
+          var row = payload.new; if (!row) return;
+          var entry = { id: row.id, name: row.author_name, rel: row.relationship, text: row.message, at: row.created_at };
+          approvedTributes = approvedTributes.filter(function (t) { return t.id !== row.id; });
+          if (row.status === 'approved') approvedTributes.unshift(entry);
+          renderTributes();
+        })
+      .subscribe();
+  }
+
+  var form = $('#tform'), msg = $('#tr-msg'), sendB = $('#tr-send');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = $('#tr-name').value.trim().slice(0, 60);
+    var rel  = $('#tr-rel').value.trim().slice(0, 40);
+    var text = $('#tr-text').value.trim().slice(0, 500);
+    if (!name || !text) { msg.textContent = 'Please add your name and a tribute message.'; return; }
+    msg.textContent = ''; sendB.disabled = true;
+
+    function fallbackLocal(note) {
+      localTributes.unshift({ id: 'l' + Date.now(), name: name, rel: rel, text: text, at: Date.now() });
+      saveLocal(); renderTributes(); form.reset(); msg.textContent = note; sendB.disabled = false;
+    }
+
+    if (db && MEMORIAL_ID) {
+      db.from('tributes').insert({
+        memorial_id: MEMORIAL_ID, author_name: name, relationship: rel || null, message: text, status: 'pending'
+      }).then(function (res) {
+        if (res.error) fallbackLocal('Tribute saved locally. It will sync once approved.');
+        else {
+          form.reset();
+          msg.textContent = 'Thank you. Your tribute is with the family and will appear once approved.';
+          sendB.disabled = false;
+        }
+      });
+    } else {
+      fallbackLocal('Thank you. Your tribute was added to the memorial.');
+    }
+  });
+
+  /* ──────────────────────────────────────────────────────────
+     BOOK / RAIL VIEWER ENGINE
+     ────────────────────────────────────────────────────────── */
+  var stage = $('#stage'), prevB = $('#prev'), nextB = $('#next'), navL = $('#nav-label'), hint = $('#hint');
+  var mode = 'rail', spread = 0, idx = 0, leaves = [], rail = null, zTimer = null;
+  var root = document.documentElement;
+
+  function measure() {
+    var w = window.innerWidth, h = window.innerHeight;
+    var m = (w >= 900 && h >= 640) ? 'book' : 'rail';
+    var ar = 1.414;
+    var pw = m === 'book' ? Math.min(500, (w - 96) / 2, (h - 220) / ar) : Math.min(420, w - 32);
+    root.style.setProperty('--pw', pw + 'px');
+    return { m: m, pw: pw };
+  }
+
+  function build() {
+    var ms = measure(); mode = ms.m; stage.innerHTML = '';
+    if (mode === 'book') {
+      var book = document.createElement('div'); book.className = 'book'; book.id = 'book';
+      var sh = document.createElement('div'); sh.className = 'book-shadow'; book.appendChild(sh);
+      leaves = [];
+      for (var i = 0; i < NL; i++) {
+        var leaf = document.createElement('div'); leaf.className = 'leaf';
+        leaf.innerHTML = '<div class="face front">' + pageEl(2*i) + '</div><div class="face back">' + pageEl(2*i+1) + '</div>';
+        book.appendChild(leaf); leaves.push(leaf);
+      }
+      stage.appendChild(book);
+      for (var j = 0; j < NL; j++) { if (j < spread) leaves[j].classList.add('flipped'); }
+      settle(); updateBook();
+      hint.textContent = 'Click page edges or arrows to turn • Tap magnifier to read large';
+    } else {
+      rail = document.createElement('div'); rail.className = 'rail'; rail.id = 'rail';
+      rail.setAttribute('tabindex', '0'); rail.setAttribute('aria-label', 'Swipe through the brochure');
+      var s = '';
+      for (var k = 0; k < TOTAL; k++) s += '<article class="slide">' + pageEl(k) + '</article>';
+      rail.innerHTML = s; stage.appendChild(rail);
+      rail.addEventListener('scroll', onRail, { passive: true });
+      rail.scrollLeft = idx * (ms.pw + 16);
+      updateRail();
+      hint.textContent = 'Swipe horizontally to turn pages • Tap to read large';
+    }
+  }
+
+  function settle() { leaves.forEach(function (l, i) { l.style.zIndex = i < spread ? (i + 1) : (NL - i); }); }
+  function updateBook() {
+    var book = $('#book'); if (!book) return;
+    book.setAttribute('data-pos', spread === 0 ? 'start' : (spread === NL ? 'end' : 'mid'));
+    leaves.forEach(function (l, i) {
+      var ff = $('.face.front', l), fb = $('.face.back', l);
+      if (ff) ff.inert = !(i === spread);
+      if (fb) fb.inert = !(i === spread - 1);
+    });
+    prevB.disabled = spread === 0; nextB.disabled = spread === NL;
+    navL.textContent = spread === 0 ? 'Cover' : (spread === NL ? 'Back cover' : 'Pages ' + (2*spread) + '–' + (2*spread+1));
+  }
+  function go(n) {
+    n = Math.max(0, Math.min(NL, n)); if (n === spread) return;
+    var fwd = n > spread, seq = [], i;
+    if (fwd) { for (i = spread; i < n; i++) seq.push(i); }
+    else      { for (i = spread - 1; i >= n; i--) seq.push(i); }
+    seq.forEach(function (li, k) {
+      var l = leaves[li];
+      l.style.transitionDelay = (Math.min(k, 8) * 70) + 'ms';
+      l.style.zIndex = fwd ? (100 + li) : (100 + NL - li);
+      l.classList.toggle('flipped', fwd);
+    });
+    spread = n; updateBook();
+    clearTimeout(zTimer);
+    zTimer = setTimeout(function () { leaves.forEach(function (l) { l.style.transitionDelay = ''; }); settle(); }, 1150 + seq.length * 70);
+  }
+  function railStep() { var s = $('.slide', rail); return s ? s.getBoundingClientRect().width + 16 : 1; }
+  function onRail()   { idx = Math.max(0, Math.min(TOTAL - 1, Math.round(rail.scrollLeft / railStep()))); updateRail(); }
+  function updateRail() {
+    prevB.disabled = idx === 0; nextB.disabled = idx === TOTAL - 1;
+    navL.textContent = idx === 0 ? 'Cover' : (idx === TOTAL - 1 ? 'Back cover' : 'Page ' + (idx + 1) + ' of ' + TOTAL);
+  }
+  function step(d) {
+    if (mode === 'book') go(spread + d);
+    else if (rail) { var t = Math.max(0, Math.min(TOTAL - 1, idx + d)); rail.scrollTo({ left: t * railStep(), behavior: 'smooth' }); }
+  }
+  function jump(page) {
+    var i = page - 1;
+    if (mode === 'book') go(Math.ceil(i / 2));
+    else if (rail) rail.scrollTo({ left: i * railStep(), behavior: 'smooth' });
+  }
+
+  prevB.addEventListener('click', function () { step(-1); });
+  nextB.addEventListener('click', function () { step(1); });
+
+  stage.addEventListener('click', function (e) {
+    var mag = e.target.closest('[data-read]');
+    if (mag) { openReader(parseInt(mag.getAttribute('data-read'), 10)); return; }
+    if (mode === 'book') {
+      if (e.target.closest('a,button,input,textarea')) return;
+      if (e.target.closest('.face.front')) step(1);
+      else if (e.target.closest('.face.back')) step(-1);
+    } else {
+      var sl = e.target.closest('.slide');
+      if (sl && !e.target.closest('button,a')) {
+        openReader(idx);
+      }
+    }
+  });
+
+  /* ──────────────────────────────────────────────────────────
+     READER (MAGNIFIER)
+     ────────────────────────────────────────────────────────── */
+  var reader = $('#reader'), rdImg = $('#rd-img'), rdScroll = $('#rd-scroll'), rdTitle = $('#rd-title');
+  var rIdx = 0, zoom = 1;
+  function base() { return Math.min(window.innerWidth - 24, 900); }
+  function applyZoom() {
+    zoom = Math.max(.5, Math.min(zoom, 1800 / base()));
+    rdImg.style.width = Math.round(base() * zoom) + 'px';
+  }
+  function showReader(i) {
+    rIdx = Math.max(0, Math.min(TOTAL - 1, i));
+    rdImg.src = lg(rIdx);
+    rdImg.alt = 'Page ' + (rIdx + 1) + ' of ' + TOTAL + ': ' + LABELS[rIdx];
+    rdTitle.innerHTML = '';
+    var t = document.createElement('span'); t.textContent = 'Page ' + (rIdx + 1) + ' of ' + TOTAL;
+    var s = document.createElement('small'); s.textContent = LABELS[rIdx];
+    rdTitle.appendChild(t); rdTitle.appendChild(s);
+    $('#rd-prev').disabled = rIdx === 0; $('#rd-next').disabled = rIdx === TOTAL - 1;
+    applyZoom(); rdScroll.scrollTop = 0; rdScroll.scrollLeft = 0;
+  }
+  function openReader(i) {
+    zoom = window.innerWidth < 700 ? 2.2 : 1.2;
+    reader.hidden = false; showReader(i);
+  }
+  function closeReader() { reader.hidden = true; rdImg.removeAttribute('src'); }
+
+  $('#rd-close').addEventListener('click', closeReader);
+  $('#rd-prev').addEventListener('click',  function () { showReader(rIdx - 1); });
+  $('#rd-next').addEventListener('click',  function () { showReader(rIdx + 1); });
+  $('#rd-in').addEventListener('click',    function () { zoom *= 1.25; applyZoom(); });
+  $('#rd-out').addEventListener('click',   function () { zoom /= 1.25; applyZoom(); });
+  $('#dock-read').addEventListener('click', function () { openReader(mode === 'book' ? spread * 2 : idx); });
+
+  /* ──────────────────────────────────────────────────────────
+     DRAWERS (Contents, Tributes, Social Share)
+     ────────────────────────────────────────────────────────── */
+  var openD = null;
+  function openDrawer(el, focusSel) {
+    openD = el; el.hidden = false; $('#scrim').hidden = false;
+    if (focusSel) setTimeout(function () { var f = $(focusSel, el); if (f) f.focus(); }, 40);
+  }
+  function closeDrawer() {
+    if (openD) { openD.hidden = true; openD = null; }
+    $('#scrim').hidden = true;
+    closeMusicDrawer();
+  }
+
+  function handleOpenTributes() {
+    loadTributes(); renderTributes(); openDrawer($('#drawer'), '#tr-name');
+  }
+  $('#dock-tributes').addEventListener('click', handleOpenTributes);
+  $('#dt-tributes').addEventListener('click', handleOpenTributes);
+
+  function handleOpenInfo() { openDrawer($('#info'), '.x'); }
+  $('#dock-info').addEventListener('click', handleOpenInfo);
+  $('#dt-contents').addEventListener('click', handleOpenInfo);
+
+  $('#scrim').addEventListener('click', closeDrawer);
+  document.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', closeDrawer); });
+
+  // Share via Web Share API or copy link
+  $('#dock-share').addEventListener('click', function () {
+    var shareData = {
+      title: 'In Loving Memory of Obaapayin Juliana Oforiwaa Amagyei (Ante)',
+      text: 'Celebration of Life — View the funeral brochure, listen to hymns, and leave a tribute.',
+      url: window.location.href
+    };
+    if (navigator.share) {
+      navigator.share(shareData).catch(function () {});
+    } else {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href).then(function () {
+          showToast('Memorial link copied to clipboard!');
+        });
+      } else {
+        showToast('Share: ' + window.location.href);
+      }
+    }
+  });
+
+  /* Table of Contents */
+  var toc = $('#toc');
+  TOC.forEach(function (t) {
+    var li = document.createElement('li'), b = document.createElement('button'); b.type = 'button';
+    var n = document.createElement('span'); n.textContent = t[0];
+    var p = document.createElement('b'); p.textContent = 'p. ' + t[1];
+    b.appendChild(n); b.appendChild(p);
+    b.addEventListener('click', function () { closeDrawer(); jump(t[1]); });
+    li.appendChild(b); toc.appendChild(li);
+  });
+
+  /* Keyboard controls */
+  document.addEventListener('keydown', function (e) {
+    if (!reader.hidden) {
+      if (e.key === 'Escape') closeReader();
+      else if (e.key === 'ArrowRight') showReader(rIdx + 1);
+      else if (e.key === 'ArrowLeft') showReader(rIdx - 1);
+      return;
+    }
+    if (openD) { if (e.key === 'Escape') closeDrawer(); return; }
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight') step(1);
+    else if (e.key === 'ArrowLeft') step(-1);
+  });
+
+  var rz;
+  window.addEventListener('resize', function () {
+    clearTimeout(rz); rz = setTimeout(function () { var cur = (mode === 'book' ? spread * 2 : idx); build(); jump(cur + 1); }, 150);
+  });
+
+  // Init
+  build();
+  renderTributes();
+})();
+</script>
+</body>
 </html>

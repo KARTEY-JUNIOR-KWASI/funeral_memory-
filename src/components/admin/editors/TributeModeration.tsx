@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../../../lib/supabase';
 import type { PublicTribute } from '../../../types/memorial';
 
@@ -7,9 +7,42 @@ interface Props {
   initialTributes: PublicTribute[];
 }
 
-export default function TributeModeration({ memorialId: _memorialId, initialTributes }: Props) {
+export default function TributeModeration({ memorialId, initialTributes }: Props) {
   const [tributes, setTributes] = useState<PublicTribute[]>(initialTributes);
   const [processing, setProcessing] = useState<string | null>(null);
+  // Banner shown when a new tribute arrives via Realtime
+  const [newArrived, setNewArrived] = useState(false);
+
+  // ── Realtime: watch for new tribute submissions ──────────────
+  useEffect(() => {
+    const channel = supabase
+      .channel(`tributes-admin-${memorialId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'tributes',
+          filter: `memorial_id=eq.${memorialId}`,
+        },
+        (payload) => {
+          const incoming = payload.new as PublicTribute;
+          setTributes(prev => {
+            // Avoid duplicates (shouldn't happen, but be safe)
+            if (prev.some(t => t.id === incoming.id)) return prev;
+            return [incoming, ...prev];
+          });
+          setNewArrived(true);
+          // Auto-hide the banner after 5s
+          setTimeout(() => setNewArrived(false), 5000);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [memorialId]);
 
   const updateStatus = async (id: string, status: 'approved' | 'rejected') => {
     setProcessing(id);
@@ -109,7 +142,30 @@ export default function TributeModeration({ memorialId: _memorialId, initialTrib
     <div>
       <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', marginBottom: 'var(--space-6)' }}>
         Review and approve tributes left by visitors. Only approved tributes are shown on the public memorial.
+        <span style={{ marginLeft: 'var(--space-2)', fontSize: 'var(--text-xs)', color: 'var(--color-text-faint)' }}>
+          Updates are live — no need to refresh.
+        </span>
       </p>
+
+      {/* Live arrival banner */}
+      {newArrived && (
+        <div style={{
+          background: 'var(--color-gold-pale)',
+          border: '1px solid var(--color-gold-light)',
+          borderRadius: 'var(--radius-md)',
+          padding: 'var(--space-3) var(--space-4)',
+          marginBottom: 'var(--space-5)',
+          fontFamily: 'var(--font-body)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--color-gold-muted)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 'var(--space-2)',
+          animation: 'fadeUp 0.3s ease',
+        }}>
+          ✉ A new tribute just arrived and is awaiting your review.
+        </div>
+      )}
 
       {/* Pending */}
       <div style={{ marginBottom: 'var(--space-8)' }}>
