@@ -196,82 +196,95 @@ main#stage {
   touch-action: pan-y;
 }
 
-/* ── Mobile Rail (Swipeable cards) ── */
-.rail {
-  width: 100%;
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-block: 8px 18px;
-  padding-inline: calc((100% - var(--pw)) / 2);
-  align-items: center;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-.rail::-webkit-scrollbar { display: none; }
-.slide {
-  flex: 0 0 var(--pw);
-  height: calc(var(--pw) * var(--ar));
-  scroll-snap-align: center;
-  position: relative;
-  background: var(--cover);
-  box-shadow: 0 12px 36px var(--shadow), 0 2px 8px rgba(0,0,0,.5);
-  border-radius: 6px;
-  overflow: hidden;
-  cursor: zoom-in;
-  transition: transform .25s ease;
-}
-.slide:active { transform: scale(.985); }
-.slide-watermark {
-  position: absolute;
-  bottom: 10px;
-  left: 12px;
-  background: rgba(10,12,14,.7);
-  backdrop-filter: blur(8px);
-  color: var(--foil-b);
-  padding: 3px 9px;
-  border-radius: 999px;
-  font-size: .68rem;
-  letter-spacing: .06em;
-  font-weight: 600;
-  pointer-events: none;
-  border: 1px solid rgba(198,159,76,.3);
-}
-
-/* ── Desktop Book (Large screens) ── */
+/* ── Responsive 3D Flipbook ── */
 .book {
   position: relative;
-  width: calc(var(--pw) * 2);
   height: calc(var(--pw) * var(--ar));
-  perspective: 2800px;
-  transition: transform .9s cubic-bezier(.5,.05,.2,1);
+  perspective: 2500px;
+  -webkit-perspective: 2500px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
 }
-.book[data-pos="start"] { transform: translateX(calc(var(--pw) * -.5)); }
-.book[data-pos="end"] { transform: translateX(calc(var(--pw) * .5)); }
+
+/* Desktop: 2-Page Spread */
+.book.desktop {
+  width: calc(var(--pw) * 2);
+  transition: transform .75s cubic-bezier(.4, 0, .2, 1);
+}
+.book.desktop[data-pos="start"] { transform: translateX(calc(var(--pw) * -.5)); }
+.book.desktop[data-pos="end"]   { transform: translateX(calc(var(--pw) * .5)); }
+
 .book-shadow {
-  position: absolute; left: 50%; bottom: -18px; width: 90%; height: 36px;
-  transform: translateX(-50%); background: radial-gradient(closest-side,var(--shadow),transparent);
-  filter: blur(6px); pointer-events: none;
+  position: absolute; left: 50%; bottom: -18px; width: 92%; height: 36px;
+  transform: translateX(-50%); background: radial-gradient(closest-side, var(--shadow), transparent);
+  filter: blur(8px); pointer-events: none; z-index: 0;
 }
+
 .leaf {
   position: absolute; left: 50%; top: 0; width: var(--pw); height: 100%;
-  transform-origin: left center; transform-style: preserve-3d;
-  transition: transform .95s cubic-bezier(.5,.05,.2,1);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform .78s cubic-bezier(.25, .1, .25, 1);
+  will-change: transform;
 }
 .leaf.flipped { transform: rotateY(-180deg); }
+
 .face {
-  position: absolute; inset: 0; backface-visibility: hidden;
-  -webkit-backface-visibility: hidden; overflow: hidden; background: var(--cover);
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--cover);
+  border-radius: 4px;
 }
 .face.back { transform: rotateY(180deg); }
-.face.front { cursor: e-resize; border-radius: 0 4px 4px 0; box-shadow: 0 1px 3px var(--shadow); }
-.face.back { cursor: w-resize; border-radius: 4px 0 0 4px; }
-.face::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
-.face.front::after { background: linear-gradient(to right,rgba(0,0,0,.26),rgba(0,0,0,.06) 3%,transparent 10%); }
-.face.back::after { background: linear-gradient(to left,rgba(0,0,0,.22),rgba(0,0,0,.05) 3%,transparent 10%); }
-.pgwrap { position: absolute; inset: 0; }
-.pg { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-drag: none; }
+.face.front { cursor: pointer; border-radius: 0 6px 6px 0; box-shadow: 0 8px 24px rgba(0,0,0,.45); }
+.face.back  { cursor: pointer; border-radius: 6px 0 0 6px; box-shadow: 0 8px 24px rgba(0,0,0,.45); }
+.face.front::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to right, rgba(0,0,0,.26), rgba(0,0,0,.04) 4%, transparent 12%); }
+.face.back::after  { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to left, rgba(0,0,0,.24), rgba(0,0,0,.04) 4%, transparent 12%); }
+
+/* Mobile: Single-Page 3D Flipbook */
+.book.mobile {
+  width: var(--pw);
+  margin: 0 auto;
+}
+.m-card {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border-radius: 8px;
+  background: var(--cover);
+  box-shadow: 0 12px 36px var(--shadow), 0 2px 8px rgba(0,0,0,.5);
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  cursor: pointer;
+  visibility: hidden;
+  will-change: transform, opacity, filter;
+}
+.m-card::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to right, rgba(0,0,0,.22) 0%, rgba(0,0,0,.03) 6%, transparent 18%);
+}
+.m-card.active {
+  visibility: visible !important;
+  z-index: 10 !important;
+  transform: rotateY(0deg) scale(1) !important;
+  opacity: 1 !important;
+  filter: brightness(1) !important;
+}
+
+.pgwrap { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
+.pg { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; user-select: none; -webkit-user-drag: none; }
+.slide-watermark {
+  position: absolute; bottom: 10px; left: 12px;
+  background: rgba(10,12,14,.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  color: var(--foil-b); padding: 3px 9px; border-radius: 999px;
+  font-size: .68rem; letter-spacing: .06em; font-weight: 600; pointer-events: none;
+  border: 1px solid rgba(198,159,76,.3);
+}
 
 /* ── Magnifier Pill on Pages ── */
 .mag {
@@ -1019,8 +1032,7 @@ main#stage {
   var MAG = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-zoom"/></svg>';
 
   function pageEl(i) {
-    var eager = i < 4;
-    return '<div class="pgwrap"><img class="pg" src="' + sm(i) + '" alt="Page ' + (i+1) + ' of ' + TOTAL + ': ' + LABELS[i] + '" draggable="false" decoding="async"' + (eager ? '' : ' loading="lazy"') + '>' +
+    return '<div class="pgwrap"><img class="pg" src="' + sm(i) + '" alt="Page ' + (i+1) + ' of ' + TOTAL + ': ' + LABELS[i] + '" draggable="false" decoding="async">' +
       '<button class="mag" type="button" data-read="' + i + '" aria-label="Read page ' + (i+1) + ' larger">' + MAG + '</button>' +
       '<span class="slide-watermark">Page ' + (i+1) + '</span></div>';
   }
@@ -1306,25 +1318,49 @@ main#stage {
   });
 
   /* ──────────────────────────────────────────────────────────
-     BOOK / RAIL VIEWER ENGINE
+     BOOK VIEWER ENGINE (Responsive 3D Flipbook)
      ────────────────────────────────────────────────────────── */
   var stage = $('#stage'), prevB = $('#prev'), nextB = $('#next'), navL = $('#nav-label'), hint = $('#hint');
-  var mode = 'rail', spread = 0, idx = 0, leaves = [], rail = null, zTimer = null;
+  var mode = 'mobile', spread = 0, idx = 0, leaves = [], mCards = [], zTimer = null, isFlipping = false;
   var root = document.documentElement;
 
   function measure() {
     var w = window.innerWidth, h = window.innerHeight;
-    var m = (w >= 900 && h >= 640) ? 'book' : 'rail';
+    var isDesktop = (w >= 768 && w > h * 1.05) || (w >= 920);
+    var m = isDesktop ? 'book' : 'mobile';
     var ar = 1.414;
-    var pw = m === 'book' ? Math.min(500, (w - 96) / 2, (h - 220) / ar) : Math.min(420, w - 32);
-    root.style.setProperty('--pw', pw + 'px');
+    var pw = m === 'book'
+      ? Math.min(500, (w - 72) / 2, (h - 220) / ar)
+      : Math.min(420, w - 32, (h - 240) / ar);
+    root.style.setProperty('--pw', Math.round(pw) + 'px');
     return { m: m, pw: pw };
+  }
+
+  function playPageFlipSound() {
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      var ctx = webAudioCtx || new AC();
+      if (ctx.state === 'suspended') ctx.resume();
+      var now = ctx.currentTime;
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(160, now);
+      osc.frequency.exponentialRampToValueAtTime(36, now + 0.12);
+      gain.gain.setValueAtTime(0.05, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.13);
+    } catch (e) {}
   }
 
   function build() {
     var ms = measure(); mode = ms.m; stage.innerHTML = '';
     if (mode === 'book') {
-      var book = document.createElement('div'); book.className = 'book'; book.id = 'book';
+      var book = document.createElement('div'); book.className = 'book desktop'; book.id = 'book';
       var sh = document.createElement('div'); sh.className = 'book-shadow'; book.appendChild(sh);
       leaves = [];
       for (var i = 0; i < NL; i++) {
@@ -1333,63 +1369,187 @@ main#stage {
         book.appendChild(leaf); leaves.push(leaf);
       }
       stage.appendChild(book);
-      for (var j = 0; j < NL; j++) { if (j < spread) leaves[j].classList.add('flipped'); }
-      settle(); updateBook();
+      settleBook();
+      updateBookNav();
       hint.textContent = 'Click page edges or arrows to turn • Tap magnifier to read large';
     } else {
-      rail = document.createElement('div'); rail.className = 'rail'; rail.id = 'rail';
-      rail.setAttribute('tabindex', '0'); rail.setAttribute('aria-label', 'Swipe through the brochure');
-      var s = '';
-      for (var k = 0; k < TOTAL; k++) s += '<article class="slide">' + pageEl(k) + '</article>';
-      rail.innerHTML = s; stage.appendChild(rail);
-      rail.addEventListener('scroll', onRail, { passive: true });
-      rail.scrollLeft = idx * (ms.pw + 16);
-      updateRail();
-      hint.textContent = 'Swipe horizontally to turn pages • Tap to read large';
+      var mbook = document.createElement('div'); mbook.className = 'book mobile'; mbook.id = 'mobile-book';
+      var msh = document.createElement('div'); msh.className = 'book-shadow'; mbook.appendChild(msh);
+      mCards = [];
+      for (var k = 0; k < TOTAL; k++) {
+        var card = document.createElement('div');
+        card.className = 'm-card';
+        card.setAttribute('data-idx', k);
+        card.innerHTML = pageEl(k);
+        mbook.appendChild(card);
+        mCards.push(card);
+      }
+      stage.appendChild(mbook);
+      settleMobile();
+      updateMobileNav();
+      hint.textContent = 'Swipe or tap page to turn • Tap magnifier to read large';
+      initTouchGestures(mbook);
     }
   }
 
-  function settle() { leaves.forEach(function (l, i) { l.style.zIndex = i < spread ? (i + 1) : (NL - i); }); }
-  function updateBook() {
+  /* Desktop Book Helpers */
+  function settleBook() {
     var book = $('#book'); if (!book) return;
     book.setAttribute('data-pos', spread === 0 ? 'start' : (spread === NL ? 'end' : 'mid'));
     leaves.forEach(function (l, i) {
+      l.style.transitionDelay = '';
+      if (i < spread) {
+        l.classList.add('flipped');
+        if (i === spread - 1) {
+          l.style.visibility = 'visible';
+          l.style.zIndex = '10';
+        } else {
+          l.style.visibility = 'hidden';
+          l.style.zIndex = '1';
+        }
+      } else {
+        l.classList.remove('flipped');
+        if (i === spread) {
+          l.style.visibility = 'visible';
+          l.style.zIndex = '10';
+        } else {
+          l.style.visibility = 'hidden';
+          l.style.zIndex = '1';
+        }
+      }
       var ff = $('.face.front', l), fb = $('.face.back', l);
       if (ff) ff.inert = !(i === spread);
       if (fb) fb.inert = !(i === spread - 1);
     });
+  }
+
+  function updateBookNav() {
     prevB.disabled = spread === 0; nextB.disabled = spread === NL;
     navL.textContent = spread === 0 ? 'Cover' : (spread === NL ? 'Back cover' : 'Pages ' + (2*spread) + '–' + (2*spread+1));
   }
+
   function go(n) {
-    n = Math.max(0, Math.min(NL, n)); if (n === spread) return;
+    n = Math.max(0, Math.min(NL, n)); if (n === spread || isFlipping) return;
+    isFlipping = true;
+    playPageFlipSound();
     var fwd = n > spread, seq = [], i;
     if (fwd) { for (i = spread; i < n; i++) seq.push(i); }
     else      { for (i = spread - 1; i >= n; i--) seq.push(i); }
+
+    seq.forEach(function (li) {
+      leaves[li].style.visibility = 'visible';
+    });
+    if (fwd && n < NL) leaves[n].style.visibility = 'visible';
+    if (!fwd && n > 0) leaves[n - 1].style.visibility = 'visible';
+
     seq.forEach(function (li, k) {
       var l = leaves[li];
-      l.style.transitionDelay = (Math.min(k, 8) * 70) + 'ms';
-      l.style.zIndex = fwd ? (100 + li) : (100 + NL - li);
+      l.style.transitionDelay = (Math.min(k, 6) * 60) + 'ms';
+      l.style.zIndex = fwd ? (50 + li) : (50 + NL - li);
       l.classList.toggle('flipped', fwd);
     });
-    spread = n; updateBook();
+    spread = n;
+    updateBookNav();
     clearTimeout(zTimer);
-    zTimer = setTimeout(function () { leaves.forEach(function (l) { l.style.transitionDelay = ''; }); settle(); }, 1150 + seq.length * 70);
+    zTimer = setTimeout(function () {
+      settleBook();
+      isFlipping = false;
+    }, 780 + seq.length * 60);
   }
-  function railStep() { var s = $('.slide', rail); return s ? s.getBoundingClientRect().width + 16 : 1; }
-  function onRail()   { idx = Math.max(0, Math.min(TOTAL - 1, Math.round(rail.scrollLeft / railStep()))); updateRail(); }
-  function updateRail() {
+
+  /* Mobile Single-Page Flip Helpers */
+  function settleMobile() {
+    mCards.forEach(function (card, k) {
+      card.className = 'm-card';
+      if (k === idx) {
+        card.classList.add('active');
+        card.style.visibility = 'visible';
+        card.style.zIndex = '10';
+        card.style.transform = 'rotateY(0deg) scale(1)';
+        card.style.opacity = '1';
+        card.style.filter = 'brightness(1)';
+      } else {
+        card.style.visibility = 'hidden';
+        card.style.zIndex = '1';
+        card.style.opacity = '0';
+        card.style.transform = k < idx ? 'rotateY(-90deg) scale(0.96)' : 'rotateY(90deg) scale(0.96)';
+      }
+    });
+  }
+
+  function updateMobileNav() {
     prevB.disabled = idx === 0; nextB.disabled = idx === TOTAL - 1;
     navL.textContent = idx === 0 ? 'Cover' : (idx === TOTAL - 1 ? 'Back cover' : 'Page ' + (idx + 1) + ' of ' + TOTAL);
   }
+
+  function flipMobile(targetIdx) {
+    targetIdx = Math.max(0, Math.min(TOTAL - 1, targetIdx));
+    if (targetIdx === idx || isFlipping) return;
+    isFlipping = true;
+    playPageFlipSound();
+
+    var curCard = mCards[idx];
+    var nextCard = mCards[targetIdx];
+    var fwd = targetIdx > idx;
+
+    nextCard.style.visibility = 'visible';
+    nextCard.style.zIndex = '9';
+    nextCard.style.transform = fwd ? 'rotateY(90deg) scale(0.96)' : 'rotateY(-90deg) scale(0.96)';
+    nextCard.style.opacity = '0.4';
+    nextCard.style.filter = 'brightness(0.7)';
+
+    curCard.style.zIndex = '10';
+    curCard.style.transition = 'transform .32s cubic-bezier(.35, 0, .2, 1), filter .32s ease, opacity .32s ease';
+    curCard.style.transform = fwd ? 'rotateY(-90deg) scale(0.96)' : 'rotateY(90deg) scale(0.96)';
+    curCard.style.filter = 'brightness(0.7)';
+    curCard.style.opacity = '0.4';
+
+    setTimeout(function () {
+      nextCard.style.zIndex = '10';
+      nextCard.style.transition = 'transform .32s cubic-bezier(.2, 0, .25, 1), filter .32s ease, opacity .32s ease';
+      nextCard.style.transform = 'rotateY(0deg) scale(1)';
+      nextCard.style.filter = 'brightness(1)';
+      nextCard.style.opacity = '1';
+
+      setTimeout(function () {
+        idx = targetIdx;
+        settleMobile();
+        updateMobileNav();
+        isFlipping = false;
+      }, 340);
+    }, 180);
+  }
+
   function step(d) {
     if (mode === 'book') go(spread + d);
-    else if (rail) { var t = Math.max(0, Math.min(TOTAL - 1, idx + d)); rail.scrollTo({ left: t * railStep(), behavior: 'smooth' }); }
+    else flipMobile(idx + d);
   }
+
   function jump(page) {
     var i = page - 1;
     if (mode === 'book') go(Math.ceil(i / 2));
-    else if (rail) rail.scrollTo({ left: i * railStep(), behavior: 'smooth' });
+    else flipMobile(i);
+  }
+
+  function initTouchGestures(container) {
+    var touchStartX = 0, touchStartY = 0;
+    container.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    container.addEventListener('touchend', function (e) {
+      if (e.changedTouches.length === 1) {
+        var dx = e.changedTouches[0].clientX - touchStartX;
+        var dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > 36 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+          if (dx < 0) step(1);
+          else        step(-1);
+        }
+      }
+    }, { passive: true });
   }
 
   prevB.addEventListener('click', function () { step(-1); });
@@ -1398,15 +1558,16 @@ main#stage {
   stage.addEventListener('click', function (e) {
     var mag = e.target.closest('[data-read]');
     if (mag) { openReader(parseInt(mag.getAttribute('data-read'), 10)); return; }
+    if (e.target.closest('a,button,input,textarea')) return;
     if (mode === 'book') {
-      if (e.target.closest('a,button,input,textarea')) return;
       if (e.target.closest('.face.front')) step(1);
       else if (e.target.closest('.face.back')) step(-1);
     } else {
-      var sl = e.target.closest('.slide');
-      if (sl && !e.target.closest('button,a')) {
-        openReader(idx);
-      }
+      var rect = stage.getBoundingClientRect();
+      var clickX = e.clientX - rect.left;
+      if (clickX > rect.width * 0.65) step(1);
+      else if (clickX < rect.width * 0.35) step(-1);
+      else openReader(idx);
     }
   });
 
