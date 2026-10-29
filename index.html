@@ -1027,6 +1027,7 @@ main#stage {
 
   function $(s, r) { return (r || document).querySelector(s); }
   var VER = 'v=2';
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
   function sm(i) { return 'pages/s' + pad(i + 1) + '.jpg?' + VER; }
   function lg(i) { return 'pages/l' + pad(i + 1) + '.jpg?' + VER; }
   var MAG = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-zoom"/></svg>';
