@@ -11,12 +11,12 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="In Loving Memory of Obaapayin Juliana Oforiwaa Amagyei (Ante)">
 <meta property="og:description" content="Celebration of life service — Saturday 31 October 2026. View the programme, listen to hymns, and leave a tribute.">
-<meta property="og:image" content="pages/s01.jpg">
+<meta property="og:image" content="pages/s01.jpg?v=2">
 <meta property="og:image:alt" content="Funeral programme of Obaapayin Juliana Oforiwaa Amagyei">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="In Loving Memory of Obaapayin Juliana Oforiwaa Amagyei">
 <meta name="twitter:description" content="Celebration of life service — Asuom, Eastern Region.">
-<meta name="twitter:image" content="pages/s01.jpg">
+<meta name="twitter:image" content="pages/s01.jpg?v=2">
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -1026,9 +1026,9 @@ main#stage {
   var NL = TOTAL / 2;
 
   function $(s, r) { return (r || document).querySelector(s); }
-  function pad(n) { return (n < 10 ? '0' : '') + n; }
-  function sm(i) { return 'pages/s' + pad(i + 1) + '.jpg'; }
-  function lg(i) { return 'pages/l' + pad(i + 1) + '.jpg'; }
+  var VER = 'v=2';
+  function sm(i) { return 'pages/s' + pad(i + 1) + '.jpg?' + VER; }
+  function lg(i) { return 'pages/l' + pad(i + 1) + '.jpg?' + VER; }
   var MAG = '<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-zoom"/></svg>';
 
   function pageEl(i) {

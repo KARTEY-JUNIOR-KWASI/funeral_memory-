@@ -14,7 +14,7 @@ export const SAMPLE_MEMORIAL: PublicMemorialData = {
     tagline: 'A life beautifully lived. A memory forever cherished.',
     profile_image_url: '/sample-portrait.jpg',
     cover_image_url: '/sample-cover.jpg',
-    programme_pdf_url: null,
+    programme_pdf_url: '/programme.pdf',
     theme: 'classic',
     status: 'published',
     published_at: '2026-09-01T00:00:00Z',
