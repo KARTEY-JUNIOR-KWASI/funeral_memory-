@@ -1,7 +1,7 @@
 import os
 import fitz # PyMuPDF
 
-pdf_path = "BROCHURE JULIANNA_2.pdf"
+pdf_path = "BROCHURE JULIANNA UPDATED.pdf"
 out_dir = "pages"
 os.makedirs(out_dir, exist_ok=True)
 
@@ -9,6 +9,16 @@ print(f"Opening {pdf_path}...")
 doc = fitz.open(pdf_path)
 total = len(doc)
 print(f"Total pages: {total}")
+
+# Also update programme.pdf with optimized web compression if possible
+try:
+    print("Saving optimized programme.pdf for web download...")
+    doc.save("programme.pdf", garbage=4, deflate=True)
+    size_mb = os.path.getsize("programme.pdf") / (1024 * 1024)
+    print(f"programme.pdf saved ({size_mb:.2f} MB)")
+except Exception as e:
+    print(f"Could not save compressed programme.pdf: {e}")
+
 
 for idx in range(total):
     page_num = idx + 1
