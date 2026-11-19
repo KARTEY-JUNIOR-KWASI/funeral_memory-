@@ -165,6 +165,36 @@ img { max-width: 100%; display: block; }
   transition: all .2s ease;
 }
 .now-playing-pill:hover { border-color: var(--foil); background: rgba(36,40,48,.95); }
+.now-playing-pill.muted .eq-bar { animation: none !important; height: 3px; opacity: .45; }
+.mute-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: rgba(26,28,34,.9);
+  border: 1px solid rgba(198,159,76,.4);
+  color: var(--foil-b);
+  cursor: pointer;
+  transition: all .2s ease;
+  flex-shrink: 0;
+}
+.mute-pill-btn:hover { border-color: var(--foil); background: rgba(36,40,48,.95); }
+.mute-pill-btn.muted,
+.music-btn.muted {
+  color: var(--stage-mute);
+  border-color: var(--ctl-line);
+}
+.mute-pill-btn svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .eq-bars {
   display: flex;
   align-items: flex-end;
@@ -650,7 +680,7 @@ main#stage {
   color: #101012;
   box-shadow: 0 4px 16px var(--gold-glow);
 }
-.music-btn svg { width: 22px; height: 22px; fill: currentColor; }
+.music-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ══════════════════════════════════════════════════════════════
    FULLSCREEN READER (Magnifier View)
@@ -782,6 +812,8 @@ main#stage {
     <symbol id="i-zoom" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5M10.5 8v5M8 10.5h5"/></symbol>
     <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+    <symbol id="i-vol"  viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></symbol>
   </defs>
 </svg>
 
@@ -801,6 +833,9 @@ main#stage {
         <span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span>
       </div>
       <span id="header-track-name">Gone Forever</span>
+    </button>
+    <button class="mute-pill-btn" id="header-mute-btn" type="button" aria-label="Mute music" aria-pressed="false" title="Mute / Unmute music">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use id="header-mute-icon" href="#i-vol"/></svg>
     </button>
     <button class="nav-btn desktop-only" id="dt-tributes" type="button">Tributes</button>
     <button class="nav-btn desktop-only" id="dt-contents" type="button">Programme</button>
@@ -910,6 +945,9 @@ main#stage {
     <button class="music-btn" id="m-prev" type="button" aria-label="Previous track">⏮</button>
     <button class="music-btn primary" id="m-toggle" type="button" aria-label="Play or pause">⏸</button>
     <button class="music-btn" id="m-next" type="button" aria-label="Next track">⏭</button>
+    <button class="music-btn" id="m-mute" type="button" aria-label="Mute music" aria-pressed="false" title="Mute / Unmute music">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use id="m-mute-icon" href="#i-vol"/></svg>
+    </button>
   </div>
 </div>
 
@@ -1054,6 +1092,7 @@ main#stage {
   ];
   var currentTrackIdx = 0;
   var isPlaying = false;
+  var isMuted = false;
   var audioElem = new Audio();
   audioElem.loop = true;
   audioElem.preload = 'auto';
@@ -1066,7 +1105,7 @@ main#stage {
       var AudioContext = window.AudioContext || window.webkitAudioContext;
       webAudioCtx = new AudioContext();
       synthGain = webAudioCtx.createGain();
-      synthGain.gain.setValueAtTime(0.12, webAudioCtx.currentTime);
+      synthGain.gain.setValueAtTime(isMuted ? 0 : 0.12, webAudioCtx.currentTime);
       synthGain.connect(webAudioCtx.destination);
     } catch (e) {}
   }
@@ -1155,6 +1194,39 @@ main#stage {
     }
   }
 
+  function applyMuteState() {
+    audioElem.muted = isMuted;
+    if (synthGain && webAudioCtx) {
+      synthGain.gain.setValueAtTime(isMuted ? 0 : 0.12, webAudioCtx.currentTime);
+    }
+    var pill = $('#header-music-btn');
+    var hMute = $('#header-mute-btn');
+    var hIcon = $('#header-mute-icon');
+    var mMute = $('#m-mute');
+    var mIcon = $('#m-mute-icon');
+    var iconHref = isMuted ? '#i-mute' : '#i-vol';
+    var label = isMuted ? 'Unmute music' : 'Mute music';
+    if (pill) pill.classList.toggle('muted', isMuted);
+    if (hMute) {
+      hMute.classList.toggle('muted', isMuted);
+      hMute.setAttribute('aria-pressed', String(isMuted));
+      hMute.setAttribute('aria-label', label);
+    }
+    if (hIcon) hIcon.setAttribute('href', iconHref);
+    if (mMute) {
+      mMute.classList.toggle('muted', isMuted);
+      mMute.setAttribute('aria-pressed', String(isMuted));
+      mMute.setAttribute('aria-label', label);
+    }
+    if (mIcon) mIcon.setAttribute('href', iconHref);
+  }
+
+  function toggleMute() {
+    isMuted = !isMuted;
+    applyMuteState();
+    showToast(isMuted ? '🔇 Music muted' : '🔊 Music unmuted');
+  }
+
   // Audio error fallback
   audioElem.addEventListener('error', function () {
     console.warn('[Audio] HTML5 audio error. Engaging ambient Web Audio chime fallback.');
@@ -1196,6 +1268,8 @@ main#stage {
   $('#m-toggle').addEventListener('click', toggleAudio);
   $('#m-next').addEventListener('click', function () { startAudioTrack(currentTrackIdx + 1); });
   $('#m-prev').addEventListener('click', function () { startAudioTrack(currentTrackIdx - 1); });
+  $('#header-mute-btn').addEventListener('click', toggleMute);
+  $('#m-mute').addEventListener('click', toggleMute);
 
   document.querySelectorAll('.track-item').forEach(function (el) {
     el.addEventListener('click', function () {
