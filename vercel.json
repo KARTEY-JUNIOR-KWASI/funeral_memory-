@@ -10,7 +10,7 @@
       "source": "/programme.pdf",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600" },
-        { "key": "Content-Disposition", "value": "inline; filename=\"Funeral-Programme-Juliana-Amagyei.pdf\"" }
+        { "key": "Content-Disposition", "value": "inline; filename=\"Funeral-Programme-Vida-Abena-Osei.pdf\"" }
       ]
     },
     {
